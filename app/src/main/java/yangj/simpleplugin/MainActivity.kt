@@ -1,42 +1,48 @@
 package yangj.simpleplugin
 
-import android.content.Context
-import android.content.Intent
-import dalvik.system.DexClassLoader
+import android.content.pm.PackageManager
+import android.widget.AdapterView
+import android.widget.ArrayAdapter
 import kotlinx.android.synthetic.main.activity_main.*
 import yangj.simpleplugin.base.BaseActivity
-import yangj.simpleplugin.constant.Constants
-import yangj.simpleplugin.utils.PluginUtils
-import java.io.File
 
 /**
  * @author YangJ
  */
 class MainActivity : BaseActivity() {
 
+    private lateinit var mAdapter: ArrayAdapter<String>
+
     override fun getLayoutResId(): Int {
         return R.layout.activity_main
     }
 
     override fun initData() {
-        val path = File(externalCacheDir, Constants.PLUGIN_FILE_NAME).absolutePath
-        val name = "yangj.simpleplugin.GameActivity"
-        val result = PluginUtils.getPluginApkPackageActivity(this@MainActivity, path, name)
-        println("result = $result")
+        val data = getApkPluginPackageActivity(ProxyActivity.sPath)
+        mAdapter = ArrayAdapter(this, android.R.layout.simple_list_item_1, data)
     }
 
     override fun initView() {
-        button.setOnClickListener {
-            // 启动插件中的Activity
-            val path = File(externalCacheDir, Constants.PLUGIN_FILE_NAME).absolutePath
-            val optimizedDirectory = getDir("plugin", Context.MODE_PRIVATE).absolutePath
-            val dexClassLoader = DexClassLoader(path, optimizedDirectory, null,
-                    classLoader)
-            val cls = dexClassLoader.loadClass("yangj.simpleplugin.GameActivity")
-            println("cls = $cls")
-            val obj = cls.newInstance()
-            println("obj = $obj")
-            startActivity(Intent(this, cls))
+        listView.adapter = mAdapter
+        listView.onItemClickListener = AdapterView.OnItemClickListener { parent, view, position, id ->
+            // 点击item启动插件中对应的Activity
+            val className = parent.adapter.getItem(position) as String
+            ProxyActivity.startActivityPlugin(this, className)
         }
+    }
+
+    /**
+     * 获取插件apk文件中的Activity
+     * @param apkPluginPath 参数为插件apk文件路径
+     */
+    private fun getApkPluginPackageActivity(apkPluginPath: String): ArrayList<String> {
+        val packageInfo = packageManager.getPackageArchiveInfo(apkPluginPath, PackageManager.GET_ACTIVITIES)
+        val activities = packageInfo.activities
+        val size = activities.size
+        val data = ArrayList<String>(size)
+        activities.forEach {
+            data.add(it.name)
+        }
+        return data
     }
 }

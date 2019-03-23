@@ -21,9 +21,11 @@ class HCallback : Handler.Callback {
     override fun handleMessage(msg: Message?): Boolean {
         if (LAUNCH_ACTIVITY == msg?.what) {
             val obj = msg?.obj
-            val intent = FieldUtils.getObject(obj::class.java, obj, "intent") as Intent
+            var intent = FieldUtils.getObject(obj::class.java, obj, "intent") as Intent
+            // 通过了AMS的检验之后，将我们希望启动的Activity取出来
             val plugin = intent.getParcelableExtra<Intent>(IActivityManagerProxy.EXTRA_PLUGIN)
             if (plugin != null) {
+                // 替换经过AMS检验的intent
                 intent.component = plugin.component
             }
             mHandler?.handleMessage(msg)
