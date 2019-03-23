@@ -42,9 +42,11 @@ public class ProxyActivity extends AppCompatActivity {
 
     @Override
     public void setContentView(int layoutResID) {
+        // 加载插件apk文件中的布局文件
         Resources resources = createResources(createAssetManager(sPath));
         XmlResourceParser parser = resources.getLayout(layoutResID);
         View view = LayoutInflater.from(this).inflate(parser, null);
+        // 执行setContentView方法
         super.setContentView(view);
     }
 
@@ -89,9 +91,9 @@ public class ProxyActivity extends AppCompatActivity {
      * @param savedInstanceState
      */
     private void initData(Bundle savedInstanceState) {
+        // 获取
         Intent data = getIntent();
         String className = data.getStringExtra(CLASS_NAME);
-        // initData: className = spt.md5.ui.PluginActivity
         Log.i(TAG, "initData: className = " + className);
         DexClassLoader dexClassLoader = new DexClassLoader(sPath,
                 getDir("plugin", Context.MODE_PRIVATE).getAbsolutePath(),
