@@ -51,10 +51,70 @@ public class ProxyActivity extends AppCompatActivity {
     }
 
     @Override
+    protected void onRestart() {
+        super.onRestart();
+        try {
+            Method method = mProxyClass.getMethod("onRestart");
+            method.invoke(mProxyActivity);
+        } catch (NoSuchMethodException e) {
+            e.printStackTrace();
+        } catch (IllegalAccessException e) {
+            e.printStackTrace();
+        } catch (InvocationTargetException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        try {
+            Method method = mProxyClass.getMethod("onStart");
+            method.invoke(mProxyActivity);
+        } catch (NoSuchMethodException e) {
+            e.printStackTrace();
+        } catch (IllegalAccessException e) {
+            e.printStackTrace();
+        } catch (InvocationTargetException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Override
     protected void onResume() {
         super.onResume();
         try {
             Method method = mProxyClass.getMethod("onResume");
+            method.invoke(mProxyActivity);
+        } catch (NoSuchMethodException e) {
+            e.printStackTrace();
+        } catch (IllegalAccessException e) {
+            e.printStackTrace();
+        } catch (InvocationTargetException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        try {
+            Method method = mProxyClass.getMethod("onPause");
+            method.invoke(mProxyActivity);
+        } catch (NoSuchMethodException e) {
+            e.printStackTrace();
+        } catch (IllegalAccessException e) {
+            e.printStackTrace();
+        } catch (InvocationTargetException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        try {
+            Method method = mProxyClass.getMethod("onStop");
             method.invoke(mProxyActivity);
         } catch (NoSuchMethodException e) {
             e.printStackTrace();
@@ -78,11 +138,6 @@ public class ProxyActivity extends AppCompatActivity {
         } catch (InvocationTargetException e) {
             e.printStackTrace();
         }
-    }
-
-    @Override
-    public View findViewById(int id) {
-        return super.findViewById(id);
     }
 
     /**
@@ -110,7 +165,6 @@ public class ProxyActivity extends AppCompatActivity {
             // 设置代理
             Method methodSetProxy = mProxyClass.getMethod("setProxy", new Class[]{Activity.class});
             Log.i(TAG, "initData: methodSetProxy = " + methodSetProxy);
-            methodSetProxy.setAccessible(true);
             methodSetProxy.invoke(mProxyActivity, new Object[]{this});
             // 反射onCreate
             Method methodOnCreate = mProxyClass.getMethod("onCreate",
@@ -125,7 +179,20 @@ public class ProxyActivity extends AppCompatActivity {
     /**
      * 启动一个插件中的Activity
      *
-     * @param className
+     * @param intent    参数为intent
+     * @param className 参数为插件APK文件中的Activity名称
+     */
+    public void startActivityPlugin(Intent intent, String className) {
+        intent.setClass(this, ProxyActivity.class);
+        intent.putExtra(CLASS_NAME, className);
+        startActivity(intent);
+    }
+
+    /**
+     * 启动一个插件中的Activity
+     *
+     * @param context   参数为当前上下文对象
+     * @param className 参数为插件APK文件中的Activity名称
      */
     public static void startActivityPlugin(Context context, String className) {
         Intent intent = new Intent(context, ProxyActivity.class);

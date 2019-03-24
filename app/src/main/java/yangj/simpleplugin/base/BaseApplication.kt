@@ -18,7 +18,7 @@ class BaseApplication : Application() {
 
     private fun initialize() {
         // 插件apk文件名称
-        val fileName = "plugin.apk"
+        val fileName = "plugin-release.apk"
         // 将插件APK拷贝到指定目录
         ProxyActivity.sPath = File(externalCacheDir, fileName).absolutePath
         FileUtils.copy(this, fileName, ProxyActivity.sPath)

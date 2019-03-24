@@ -27,8 +27,8 @@ object FileUtils {
      * @param path 参数为插件apk文件缓存路径
      */
     fun copy(context: Context, fileName: String, path: String): Boolean? {
-        // 判断文件是否存在指定路径
-        if (exists(path)) return true
+//        // 判断文件是否存在指定路径
+//        if (exists(path)) return true
         // 开始拷贝
         var inputStream: InputStream? = null
         var outputStream: FileOutputStream? = null
