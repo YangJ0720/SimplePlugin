@@ -87,6 +87,18 @@ public class BaseActivity extends AppCompatActivity {
         return mProxyActivity.findViewById(id);
     }
 
+    @Override
+    public Intent getIntent() {
+        Intent intent = mProxyActivity.getIntent();
+        Log.i(TAG, "getIntent: intent = " + intent);
+        return intent;
+    }
+
+    @Override
+    public void finish() {
+        mProxyActivity.finish();
+    }
+
     /**
      * 启动插件中的Activity
      *

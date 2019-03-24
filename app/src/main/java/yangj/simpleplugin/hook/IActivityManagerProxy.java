@@ -6,8 +6,6 @@ import android.text.TextUtils;
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
 
-import yangj.simpleplugin.ProxyActivity;
-
 /**
  * Hook IActivityManager
  * Created by YangJ on 2018/11/19.
@@ -39,14 +37,12 @@ public class IActivityManagerProxy implements InvocationHandler {
                 }
             }
             // 启动manifest文件中定义的Activity
-            Intent manifest = new Intent();
+            Intent manifest = (Intent) intent.clone();
             String packageName = "yangj.simpleplugin";
             String className = packageName + ".MainActivity";
             manifest.setClassName(packageName, className);
             // 将需要启动但是又没有在manifest中定义的Activity添加到intent
             manifest.putExtra(EXTRA_PLUGIN, intent);
-            manifest.putExtra(ProxyActivity.CLASS_NAME,
-                    intent.getStringExtra(ProxyActivity.CLASS_NAME));
             // 替换掉intent这就相当于通知AMS启动一个正常的Activity
             args[index] = manifest;
         }

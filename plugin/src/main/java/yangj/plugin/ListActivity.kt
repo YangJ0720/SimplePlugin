@@ -17,10 +17,11 @@ class ListActivity : BaseActivity() {
     public override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_list)
+        initData()
         initView()
     }
 
-    private fun initView() {
+    private fun initData() {
         // 初始化数据适配器
         val size = 100
         val list = ArrayList<String>(size)
@@ -30,6 +31,9 @@ class ListActivity : BaseActivity() {
         println("list = $list")
         mAdapter = ArrayAdapter(mProxyActivity, android.R.layout.simple_list_item_1, list)
         println("mAdapter = $mAdapter")
+    }
+
+    private fun initView() {
         // 绑定数据适配器
         listView.adapter = mAdapter
         listView.onItemClickListener = AdapterView.OnItemClickListener { parent, view, position, id ->

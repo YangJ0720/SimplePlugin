@@ -1,19 +1,29 @@
 package yangj.plugin;
 
 import android.os.Bundle;
+import android.util.Log;
 
 import yangj.plugin.base.BaseActivity;
 
 /**
- * A login screen that offers login via email/password.
+ * @author YangJ
  */
 public class LoginActivity extends BaseActivity {
+
+    // TAG
+    private static final String TAG = "LoginActivity";
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+        Log.i(TAG, "onCreate");
+        initData();
         initView();
+    }
+
+    private void initData() {
+
     }
 
     private void initView() {

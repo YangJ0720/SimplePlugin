@@ -55,6 +55,7 @@ public class ProxyActivity extends AppCompatActivity {
         super.onRestart();
         try {
             Method method = mProxyClass.getMethod("onRestart");
+            Log.i(TAG, "onRestart: " + method);
             method.invoke(mProxyActivity);
         } catch (NoSuchMethodException e) {
             e.printStackTrace();
@@ -70,6 +71,7 @@ public class ProxyActivity extends AppCompatActivity {
         super.onStart();
         try {
             Method method = mProxyClass.getMethod("onStart");
+            Log.i(TAG, "onStart: " + method);
             method.invoke(mProxyActivity);
         } catch (NoSuchMethodException e) {
             e.printStackTrace();
@@ -85,6 +87,7 @@ public class ProxyActivity extends AppCompatActivity {
         super.onResume();
         try {
             Method method = mProxyClass.getMethod("onResume");
+            Log.i(TAG, "onResume: " + method);
             method.invoke(mProxyActivity);
         } catch (NoSuchMethodException e) {
             e.printStackTrace();
@@ -100,6 +103,7 @@ public class ProxyActivity extends AppCompatActivity {
         super.onPause();
         try {
             Method method = mProxyClass.getMethod("onPause");
+            Log.i(TAG, "onPause: " + method);
             method.invoke(mProxyActivity);
         } catch (NoSuchMethodException e) {
             e.printStackTrace();
@@ -115,6 +119,7 @@ public class ProxyActivity extends AppCompatActivity {
         super.onStop();
         try {
             Method method = mProxyClass.getMethod("onStop");
+            Log.i(TAG, "onStop: " + method);
             method.invoke(mProxyActivity);
         } catch (NoSuchMethodException e) {
             e.printStackTrace();
@@ -129,8 +134,9 @@ public class ProxyActivity extends AppCompatActivity {
     protected void onDestroy() {
         super.onDestroy();
         try {
-            Method method = mProxyClass.getMethod("onDestroy", new Class[]{});
-            method.invoke(mProxyActivity, new Object[]{});
+            Method method = mProxyClass.getMethod("onDestroy");
+            Log.i(TAG, "onDestroy: " + method);
+            method.invoke(mProxyActivity);
         } catch (NoSuchMethodException e) {
             e.printStackTrace();
         } catch (IllegalAccessException e) {
@@ -178,6 +184,7 @@ public class ProxyActivity extends AppCompatActivity {
 
     /**
      * 启动一个插件中的Activity
+     * <br>该方法用于提供插件APK中的Activity反射调用，可以启动另外的插件Activity<br/>
      *
      * @param intent    参数为intent
      * @param className 参数为插件APK文件中的Activity名称
