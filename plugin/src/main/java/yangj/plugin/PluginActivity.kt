@@ -1,5 +1,6 @@
 package yangj.plugin
 
+import android.graphics.BitmapFactory
 import android.os.Bundle
 import android.widget.Toast
 import kotlinx.android.synthetic.main.activity_plugin.*
@@ -22,9 +23,15 @@ class PluginActivity : BaseActivity() {
     }
 
     private fun initView() {
-        tvPlugin.text = "插件"
+        val resId = R.drawable.a0a
+        println("resId = $resId")
+        val bitmap = BitmapFactory.decodeResource(resources, resId)
+        println("bitmap = $bitmap")
+        imageView.setImageBitmap(bitmap)
+        tvPlugin.text = getString(R.string.app_name)
         button.setOnClickListener {
-            Toast.makeText(mProxyActivity, "插件", Toast.LENGTH_SHORT).show()
+            val text = resources.getString(R.string.app_name)
+            Toast.makeText(mProxyActivity, text, Toast.LENGTH_SHORT).show()
         }
     }
 }

@@ -31,6 +31,7 @@ public class ProxyActivity extends AppCompatActivity {
 
     private Class mProxyClass;
     private Object mProxyActivity;
+    private Resources mResources;
 
     private static final String TAG = "ProxyActivity";
 
@@ -146,13 +147,20 @@ public class ProxyActivity extends AppCompatActivity {
         }
     }
 
+    public Resources getProxyResources() {
+        if (mResources == null) {
+            mResources = createResources(createAssetManager(sPath));
+        }
+        return mResources;
+    }
+
     /**
      * 初始化基础数据
      *
      * @param savedInstanceState
      */
     private void initData(Bundle savedInstanceState) {
-        // 获取
+        // 获取要启动的插件Activity名称
         Intent data = getIntent();
         String className = data.getStringExtra(CLASS_NAME);
         Log.i(TAG, "initData: className = " + className);
@@ -164,9 +172,9 @@ public class ProxyActivity extends AppCompatActivity {
             // 获取要启动的插件Activity，例如：ShowActivity
             mProxyClass = dexClassLoader.loadClass(className);
             Log.i(TAG, "mProxyClass: " + mProxyClass);
-            Constructor constructor = mProxyClass.getConstructor(new Class[]{});
+            Constructor constructor = mProxyClass.getConstructor();
             // 实例化要启动的插件Activity
-            mProxyActivity = constructor.newInstance(new Object[]{});
+            mProxyActivity = constructor.newInstance();
             Log.i(TAG, "mProxyActivity: " + mProxyActivity);
             // 设置代理
             Method methodSetProxy = mProxyClass.getMethod("setProxy", new Class[]{Activity.class});

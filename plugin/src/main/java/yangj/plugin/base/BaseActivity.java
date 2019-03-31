@@ -1,14 +1,18 @@
 package yangj.plugin.base;
 
+import android.app.ActionBar;
 import android.app.Activity;
 import android.content.Intent;
+import android.content.res.Resources;
 import android.os.Bundle;
 import android.os.PersistableBundle;
 import android.support.annotation.Nullable;
+import android.support.v4.app.FragmentActivity;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 
+import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 
 /**
@@ -88,6 +92,25 @@ public class BaseActivity extends AppCompatActivity {
     }
 
     @Override
+    public Resources getResources() {
+        Class cls = mProxyActivity.getClass();
+        try {
+            Method method = cls.getMethod("getProxyResources");
+            Log.i(TAG, "getResources: method = " + method);
+            Resources resources = (Resources) method.invoke(mProxyActivity);
+            Log.i(TAG, "getResources: resources = " + resources);
+            return resources;
+        } catch (NoSuchMethodException e) {
+            e.printStackTrace();
+        } catch (IllegalAccessException e) {
+            e.printStackTrace();
+        } catch (InvocationTargetException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    @Override
     public Intent getIntent() {
         Intent intent = mProxyActivity.getIntent();
         Log.i(TAG, "getIntent: intent = " + intent);
@@ -101,6 +124,7 @@ public class BaseActivity extends AppCompatActivity {
 
     /**
      * 启动插件中的Activity
+     * <p>该方法用于反射调用宿主APK中的ProxyActivity方法</p>
      *
      * @param className
      */

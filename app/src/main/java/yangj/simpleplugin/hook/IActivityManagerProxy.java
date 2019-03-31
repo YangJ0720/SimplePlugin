@@ -36,14 +36,14 @@ public class IActivityManagerProxy implements InvocationHandler {
                     break;
                 }
             }
-            // 启动manifest文件中定义的Activity
+            // 启动manifest文件中定义的Activity（此处可以优化）
             Intent manifest = (Intent) intent.clone();
             String packageName = "yangj.simpleplugin";
             String className = packageName + ".MainActivity";
             manifest.setClassName(packageName, className);
             // 将需要启动但是又没有在manifest中定义的Activity添加到intent
             manifest.putExtra(EXTRA_PLUGIN, intent);
-            // 替换掉intent这就相当于通知AMS启动一个正常的Activity
+            // 替换掉intent这就相当于通知AMS启动一个正常注册的Activity
             args[index] = manifest;
         }
         return method.invoke(mActivityManager, args);

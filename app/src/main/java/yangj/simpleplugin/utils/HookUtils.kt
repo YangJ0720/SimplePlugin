@@ -12,7 +12,7 @@ import java.lang.reflect.Proxy
 object HookUtils {
 
     fun hookAMS() {
-        var singleton: Any? = null
+        var singleton: Any?
         singleton = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             val cls = "android.app.ActivityManager"
             FieldUtils.getObject(cls, null, "IActivityManagerSingleton")
@@ -21,7 +21,7 @@ object HookUtils {
             FieldUtils.getObject(cls, null, "gDefault")
         }
         val field = FieldUtils.getField("android.util.Singleton", "mInstance")
-        // 获取iActivityManager
+        // 获取IActivityManager
         val obj = field.get(singleton)
         //
         val clazz = Class.forName("android.app.IActivityManager")
