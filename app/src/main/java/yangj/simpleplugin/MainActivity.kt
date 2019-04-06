@@ -37,12 +37,17 @@ class MainActivity : BaseActivity() {
      */
     private fun getApkPluginPackageActivity(apkPluginPath: String): ArrayList<String> {
         val packageInfo = packageManager.getPackageArchiveInfo(apkPluginPath, PackageManager.GET_ACTIVITIES)
-        val activities = packageInfo.activities
-        val size = activities.size
-        val data = ArrayList<String>(size)
-        activities.forEach {
-            data.add(it.name)
+        // 注意在小于等于4.4的操作系统上调用getPackageArchiveInfo这个方法获取不到PackageInfo
+        val activities = packageInfo?.activities
+        return if (activities == null) {
+            ArrayList(0)
+        } else {
+            val size = activities.size
+            val data = ArrayList<String>(size)
+            activities.forEach { item ->
+                data.add(item.name)
+            }
+            data
         }
-        return data
     }
 }

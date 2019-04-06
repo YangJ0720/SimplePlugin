@@ -28,7 +28,7 @@ class PluginActivity : BaseActivity() {
         val bitmap = BitmapFactory.decodeResource(resources, resId)
         println("bitmap = $bitmap")
         imageView.setImageBitmap(bitmap)
-        tvPlugin.text = getString(R.string.app_name)
+        tvPlugin.text = resources.getString(R.string.app_name)
         button.setOnClickListener {
             val text = resources.getString(R.string.app_name)
             Toast.makeText(mProxyActivity, text, Toast.LENGTH_SHORT).show()
